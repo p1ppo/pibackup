@@ -1,0 +1,9 @@
+build/
+dist/
+*.pyc
+lib/*.exe
+lib/*mac
+/lib/linux
+/lib/windows
+pibackup-egg.info/
+

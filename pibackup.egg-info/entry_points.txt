@@ -1,0 +1,4 @@
+[console_scripts]
+pibackup = pibackup.app:main
+pibackup-config = pibackup.config:main
+
