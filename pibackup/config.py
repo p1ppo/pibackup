@@ -29,7 +29,8 @@ def config_pibackup():
         config_pibackup()
     if answer == 'c':
         pass
-    main()
+    if answer == 'q':
+        main()
 
 
 def main():
