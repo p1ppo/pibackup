@@ -6,4 +6,5 @@ lib/*mac
 /lib/linux
 /lib/windows
 pibackup.egg-info/
+.DS-Store
 
