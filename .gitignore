@@ -5,5 +5,5 @@ lib/*.exe
 lib/*mac
 /lib/linux
 /lib/windows
-pibackup-egg.info/
+pibackup.egg-info/
 
