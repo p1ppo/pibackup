@@ -7,13 +7,17 @@ if not present standard parameters shall be used
 
 from pkg_resources import resource_filename
 import os
+import pathlib
+
+
+HOME_DIR = str(pathlib.Path.home()) + '/'
 
 
 def config_rclone():
     # for mac system
     # rclone_path = resource_filename('pibackup', '../lib/rclone_mac')
     # for raspberry
-    rclone_path = resource_filename('pibackup', '../lib/rclone')   
+    rclone_path = resource_filename('pibackup', '../lib/rclone')
     rclone_abspath = '"' + os.path.abspath(rclone_path) + '"'
     os.system(rclone_abspath + ' config')
     main()
@@ -28,7 +32,21 @@ def config_pibackup():
     if answer not in ['c', 'q']:
         config_pibackup()
     if answer == 'c':
-        pass
+        config_file_template = resource_filename('pibackup', './config.json')
+        config_file_path = HOME_DIR + './.config/pibackup/config.json'
+
+        if not os.path.exists(HOME_DIR + './.config/pibackup/'):
+            cmd = 'mkdir -p ' + HOME_DIR + './.config/pibackup'
+            os.system(cmd)
+
+        if not os.path.exists(config_file_path):
+            cmd = 'cp ' + config_file_template + ' ' + config_file_path
+            os.system(cmd)
+            print('>>> created config file at', config_file_path)
+            main()
+        else:
+            print('>>> config file already exists at', config_file_path)
+            main()
     if answer == 'q':
         main()
 
@@ -47,5 +65,6 @@ def main():
     elif answer == 's':
         config_pibackup()
 
+if __name__ == "__main__":
+    main()
 
-main()

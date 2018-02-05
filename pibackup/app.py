@@ -3,29 +3,41 @@ import datetime
 from time import sleep
 import logging
 from pkg_resources import resource_filename
+import json
 
 import schedule
 
 from pibackup.helpers import schedule_weekly
 
-# import sys
+import sys
 # from helpers import rclone
 # from sh import rsync
 # from helpers import terminal_command
+
+
+try:
+    config_file = open('/home/pi/.config/pibackup/config.json', 'r')
+except:
+    config_file_path = resource_filename('pibackup', './config.json')
+    config_file = open(config_file_path, 'r')
+
+config_json = config_file.read()
+config_data = json.loads(config_json)
+config_file.close()
 
 
 # SUDO_PSWD = ""
 # INSTALL_DIR = ""
 
 # default on production system, i.e. raspberry
-HOME_FOLDER = "/home/pi/"
+HOME_FOLDER = config_data['folders']['home']
 # for testing on windows development system
 # HOME_FOLDER = "/Users/pcremer-surface/"
 # for testing on Mac
 # HOME_FOLDER = "/Users/philipp/"
 
 # system can be 'fhem' or 'iobroker'
-SMART_HOME_SYSTEM = 'fhem'
+SMART_HOME_SYSTEM = config_data['system']['type']
 # OPERATING_FOLDER = HOME_FOLDER + "./fhem.files/"
 # BACKUP_FOLDER_PIBACKUP = OPERATING_FOLDER + "./backups/"
 
@@ -50,8 +62,8 @@ rclone_resource_filename = resource_filename('pibackup', '../lib/rclone')
 # rclone_resource_filename = resource_filename('pibackup', '../lib/rclone')
 
 RCLONE_PATH = '"' + os.path.abspath(rclone_resource_filename) + '"'
-RCLONE_DRIVE = 'drive:'
-RCLONE_BACKUP_PATH = RCLONE_DRIVE + '/backups/fhem-upstairs/'
+RCLONE_DRIVE = config_data['rclone']['drive_name']
+RCLONE_BACKUP_PATH = RCLONE_DRIVE + config_data['rclone']['cloud_path']
 
 
 def main():
@@ -90,8 +102,10 @@ def initialize_jobs():
     # schedule.every(5).seconds.do(lambda: print('scheduled output...'))
 
     # initialize backup process
-    schedule_weekly(DAY_FOR_BACKUP, EXECUTION_TIME, fhem_backup)
-    # schedule_weekly(DAY_FOR_BACKUP, EXECUTION_TIME, iobroker_backup)
+    if SMART_HOME_SYSTEM == "fhem":
+        schedule_weekly(DAY_FOR_BACKUP, EXECUTION_TIME, fhem_backup)
+    elif SMART_HOME_SYSTEM == "iobroker":
+        schedule_weekly(DAY_FOR_BACKUP, EXECUTION_TIME, iobroker_backup)
 
     # initialize cleanup of backup folder
     schedule_weekly(DAY_FOR_CLEANUP_BACKUP_FOLDER, EXECUTION_TIME,

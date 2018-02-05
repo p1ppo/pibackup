@@ -1,12 +1,17 @@
 {
-    "Section1": {
-        "a": 12345678,
-        "b": 2,
-        "s": "Hallo"
+    "folders": {
+        "home": "/home/pi/"
     },
-    "Section2": {
-        "c": 3,
-        "d": 4,
-        "s": "Welt"
+    "schedules": {
+        "backup_local": 3,
+        "clean_local": 4,
+        "cloud_sync": "Welt"
+    },
+    "rclone": {
+    	"drive_name": "drive:",
+	"cloud_path": "/backups/fhem-upstairs/"
+    },
+    "system": {
+    	"type": "fhem"
     }
 }
