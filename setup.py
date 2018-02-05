@@ -2,7 +2,7 @@ from setuptools import setup
 
 config = {
     'name': 'pibackup',
-    'version': '0.0.4',
+    'version': '0.0.5',
     'author': 'p1ppo',
     'packages': ['pibackup', 'lib'],
     'include_package_data': True,
@@ -10,7 +10,10 @@ config = {
                     'home systems like fhem or iobroker'),
     # 'zip_safe': False,
     # 'py_modules': [''],
-    'package_data': {'lib': ['rclone', '*.json']},
+    'package_data': {
+        'lib': ['rclone', '*.json'],
+        '': ['*.json']
+    },
     'entry_points': {
         'console_scripts': [
             'pibackup = pibackup.app:main',
