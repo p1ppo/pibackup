@@ -17,53 +17,74 @@ def config_rclone():
     # for mac system
     # rclone_path = resource_filename('pibackup', '../lib/rclone_mac')
     # for raspberry
+    print('\n\n\npibackup - smart home backup system')
+    print('>>> main >>> rclone config\n')
     rclone_path = resource_filename('pibackup', '../lib/rclone')
     rclone_abspath = '"' + os.path.abspath(rclone_path) + '"'
     os.system(rclone_abspath + ' config')
-    main()
+    return
 
 
 def config_pibackup():
-    print('\npibackup - smart home backup system')
-    print('>>> main >>> pibackup config file\n')
-    print('c) Copy config template to ~/.config/pibackup')
-    print('q) Quit config')
-    answer = input('c/q> ').lower()
-    if answer not in ['c', 'q']:
-        config_pibackup()
-    if answer == 'c':
-        config_file_template = resource_filename('pibackup', './config.json')
-        config_file_path = HOME_DIR + './.config/pibackup/config.json'
+    answer = ''
+    while answer != 'q':
+        print('\n\n\npibackup - smart home backup system')
+        print('>>> main >>> pibackup config file\n')
+        print('c) Copy config template to ~/.config/pibackup')
+        print('q) Quit config')
+        answer = input('c/q> ').lower()
+        # if answer not in ['c', 'q']:
+            # config_pibackup()
+        if answer == 'c':
+            config_file_template = resource_filename('pibackup', './config.json')
+            config_file_path = HOME_DIR + '.config/pibackup/config.json'
 
-        if not os.path.exists(HOME_DIR + './.config/pibackup/'):
-            cmd = 'mkdir -p ' + HOME_DIR + './.config/pibackup'
-            os.system(cmd)
+            if not os.path.exists(HOME_DIR + '.config/pibackup/'):
+                cmd = 'mkdir -p ' + HOME_DIR + '.config/pibackup'
+                os.system(cmd)
 
-        if not os.path.exists(config_file_path):
-            cmd = 'cp ' + config_file_template + ' ' + config_file_path
-            os.system(cmd)
-            print('>>> created config file at', config_file_path)
-            main()
-        else:
-            print('>>> config file already exists at', config_file_path)
-            main()
-    if answer == 'q':
-        main()
+            if not os.path.exists(config_file_path):
+                cmd = 'cp ' + config_file_template + ' ' + config_file_path
+                os.system(cmd)
+                print('>>> created config file at', config_file_path)
+                break
+            else:
+                print('>>> config file already exists at', config_file_path)
+                break
+    return
+
+
+def add_cron_job():
+    from crontab import CronTab
+    cron = CronTab(user=True)
+    job = cron.new(command='pibackup &')
+    job.every_reboot()
+    cron.write()
+    print('>>> Added new cron job to user cron table')
+    return
 
 
 def main():
-    print('\npibackup - smart home backup system')
-    print('>>> main\n')
-    print('s) Setup config file for pibackup')
-    print('c) Configure rclone cloud drive')
-    print('q) Quit config')
-    answer = input('s/c/q> ').lower()
-    if answer not in ['s', 'c', 'q']:
-        main()
-    if answer == 'c':
-        config_rclone()
-    elif answer == 's':
-        config_pibackup()
+    answer = ''
+    while answer != 'q':
+        print('\n\n\npibackup - smart home backup system')
+        print('>>> main\n')
+        print('s) Setup config file for pibackup')
+        print('c) Configure rclone cloud drive')
+        print('a) Add cron job at reboot to start backup')
+        print('q) Quit config')
+        answer = input('s/c/q> ').lower()
+        # if answer not in ['s', 'c', 'q']:
+            # main()
+        if answer == 'c':
+            config_rclone()
+        elif answer == 's':
+            config_pibackup()
+        elif answer == 'a':
+            add_cron_job()
+    print('After configuration you can run pibackup through reboot or')
+    print('> python3 -m pibackup.app &')
+    print('> disown')
 
 if __name__ == "__main__":
     main()

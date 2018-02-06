@@ -4,6 +4,7 @@ from time import sleep
 import logging
 from pkg_resources import resource_filename
 import json
+import pathlib
 
 import schedule
 
@@ -15,8 +16,22 @@ import sys
 # from helpers import terminal_command
 
 
+HOME_FOLDER = str(pathlib.Path.home()) + '/'
+
+
+# -----> setup logging <-----
+# initialize logging
+logging.basicConfig(filename=HOME_FOLDER+'pibackup.log',
+                    level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s: %(message)s',
+                    datefmt='%d/%m/%Y %I:%M:%S %p')
+# example messages from tutorial, just here as a reminder
+# logging.debug('This message should go to the log file')
+# logging.info('So should this')
+# logging.warning('And this, too')
+
 try:
-    config_file = open('/home/pi/.config/pibackup/config.json', 'r')
+    config_file = open(HOME_FOLDER + '.config/pibackup/config.json', 'r')
 except:
     config_file_path = resource_filename('pibackup', './config.json')
     config_file = open(config_file_path, 'r')
@@ -26,25 +41,22 @@ config_data = json.loads(config_json)
 config_file.close()
 
 
-# SUDO_PSWD = ""
-# INSTALL_DIR = ""
-
 # default on production system, i.e. raspberry
-HOME_FOLDER = config_data['folders']['home']
-# for testing on windows development system
-# HOME_FOLDER = "/Users/pcremer-surface/"
-# for testing on Mac
-# HOME_FOLDER = "/Users/philipp/"
+# HOME_FOLDER = config_data['folders']['home']
 
 # system can be 'fhem' or 'iobroker'
 SMART_HOME_SYSTEM = config_data['system']['type']
-# OPERATING_FOLDER = HOME_FOLDER + "./fhem.files/"
-# BACKUP_FOLDER_PIBACKUP = OPERATING_FOLDER + "./backups/"
+# OPERATING_FOLDER = HOME_FOLDER + "fhem.files/"
+# BACKUP_FOLDER_PIBACKUP = OPERATING_FOLDER + "backups/"
 
 if SMART_HOME_SYSTEM == 'fhem':
     BACKUP_FOLDER_SMART_HOME_SYSTEM = "/opt/fhem/backup/"
 elif SMART_HOME_SYSTEM == 'iobroker':
     BACKUP_FOLDER_SMART_HOME_SYSTEM = "/opt/iobroker/backup/"
+else:
+    logging.warning('>>> system entry not valid (use "fhem" or "iobroker")')
+    logging.warning('>>> stopping execution of backup system')
+    sys.exit()
 
 DAY_FOR_BACKUP = "Wednesday"
 FILES_TO_KEEP_IN_BACKUP = 5
@@ -63,6 +75,7 @@ rclone_resource_filename = resource_filename('pibackup', '../lib/rclone')
 
 RCLONE_PATH = '"' + os.path.abspath(rclone_resource_filename) + '"'
 RCLONE_DRIVE = config_data['rclone']['drive_name']
+if RCLONE_DRIVE[-1] != ":": RCLONE_DRIVE += ":"
 RCLONE_BACKUP_PATH = RCLONE_DRIVE + config_data['rclone']['cloud_path']
 
 
@@ -74,20 +87,6 @@ def main():
     # terminal_command("echo", "Hallo Welt!")
     # rclone(RCLONE_PATH, "lsd drive:")
 
-    # -----> setup logging <-----
-    # check if folder exists, if not create it
-    # if not os.path.exists(OPERATING_FOLDER):
-    #     os.makedirs(OPERATING_FOLDER)
-    # initialize logging
-    logging.basicConfig(filename=HOME_FOLDER+'pibackup.log',
-                        level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s: %(message)s',
-                        datefmt='%d/%m/%Y %I:%M:%S %p')
-
-    # example messages from tutorial, just here as a reminder
-    # logging.debug('This message should go to the log file')
-    # logging.info('So should this')
-    # logging.warning('And this, too')
 
     initialize_jobs()
 

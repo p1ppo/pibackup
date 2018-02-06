@@ -2,7 +2,7 @@ from setuptools import setup
 
 config = {
     'name': 'pibackup',
-    'version': '0.0.5',
+    'version': '0.0.6',
     'author': 'p1ppo',
     'packages': ['pibackup', 'lib'],
     'include_package_data': True,
@@ -21,7 +21,7 @@ config = {
         ]
     },
     # 'scripts': ['bin/bin-script'],
-    'install_requires': ['schedule'],
+    'install_requires': ['schedule', 'python-crontab'],
 }
 
 setup(**config)

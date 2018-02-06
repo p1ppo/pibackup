@@ -9,7 +9,7 @@
     },
     "rclone": {
     	"drive_name": "drive:",
-	"cloud_path": "/backups/fhem-upstairs/"
+	"cloud_path": "/backups/fhem/"
     },
     "system": {
     	"type": "fhem"
