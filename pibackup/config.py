@@ -25,6 +25,16 @@ def config_rclone():
     return
 
 
+def user_output(lines):
+    line_length = max(map(lambda item: len(item), lines))
+    print('\n' * 3)
+    print('-' * line_length)
+    for line in lines:
+        print(line)
+    print('-' * line_length)
+    return
+
+
 def config_pibackup():
     answer = ''
     while answer != 'q':
@@ -46,10 +56,10 @@ def config_pibackup():
             if not os.path.exists(config_file_path):
                 cmd = 'cp ' + config_file_template + ' ' + config_file_path
                 os.system(cmd)
-                print('>>> created config file at', config_file_path)
+                user_output(['>>> created config file at' + config_file_path])
                 break
             else:
-                print('>>> config file already exists at', config_file_path)
+                user_output(['>>> config file already exists at' + config_file_path])
                 break
     return
 
@@ -60,7 +70,7 @@ def add_cron_job():
     job = cron.new(command='pibackup &')
     job.every_reboot()
     cron.write()
-    print('>>> Added new cron job to user cron table')
+    user_output(['>>> Added new cron job to user cron table'])
     return
 
 
@@ -82,9 +92,11 @@ def main():
             config_pibackup()
         elif answer == 'a':
             add_cron_job()
-    print('After configuration you can run pibackup through reboot or')
-    print('> python3 -m pibackup.app &')
-    print('> disown')
+    user_output(['After configuration you can run pibackup through reboot or',
+                 '> pibackup &',
+                 '> disown'
+                 ])
+
 
 if __name__ == "__main__":
     main()

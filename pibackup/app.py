@@ -72,7 +72,6 @@ rclone_resource_filename = resource_filename('pibackup', '../lib/rclone')
 # rclone_resource_filename = resource_filename('pibackup', '../lib/rclone.exe')
 # on Mac
 # rclone_resource_filename = resource_filename('pibackup', '../lib/rclone')
-
 RCLONE_PATH = '"' + os.path.abspath(rclone_resource_filename) + '"'
 RCLONE_DRIVE = config_data['rclone']['drive_name']
 if RCLONE_DRIVE[-1] != ":": RCLONE_DRIVE += ":"
@@ -81,15 +80,7 @@ RCLONE_BACKUP_PATH = RCLONE_DRIVE + config_data['rclone']['cloud_path']
 
 def main():
     """ Main routine controlling actions of backup system. """
-
-    # few test calls of functions
-    # terminal_command('ls', '-al')
-    # terminal_command("echo", "Hallo Welt!")
-    # rclone(RCLONE_PATH, "lsd drive:")
-
-
     initialize_jobs()
-
     while True:
         schedule.run_pending()
         sleep(1)
