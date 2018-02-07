@@ -30,16 +30,19 @@ Usage
 -----
 
 Install from PyPi
+
 .. code-block:: bash
 
     $ sudo pip3 install pibackup
 
 Run config
+
 .. code-block:: bash
 
     $ pibackup-config
 
 ...and go through steps within config dialogue:
+
 1. generate config file
 2. setup rclone
 3. generate crontab entry to run at boot
@@ -49,6 +52,7 @@ Run config
     more to follow...
 
 Finally edit ~/.conf/pibackup/config.json to your liking, especially adapt
+
 1. system type (fhem or iobroker)
 2. backup folder name for cloud drive
 
