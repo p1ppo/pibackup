@@ -2,7 +2,7 @@ pibackup
 ========
 
 
-.. image:: https://img.shields.io/pypi/v/schedule.svg
+.. image:: https://img.shields.io/badge/pibackup-pypi-green.svg
         :target: https://pypi.python.org/pypi/pibackup
 
 
