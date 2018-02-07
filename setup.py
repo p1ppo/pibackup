@@ -2,7 +2,7 @@ from setuptools import setup
 
 config = {
     'name': 'pibackup',
-    'version': '0.0.9',
+    'version': '0.0.10',
     'author': 'p1ppo',
     'packages': ['pibackup', 'lib'],
     'include_package_data': True,

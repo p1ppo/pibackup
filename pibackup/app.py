@@ -52,7 +52,7 @@ SMART_HOME_SYSTEM = config_data['system']['type']
 if SMART_HOME_SYSTEM == 'fhem':
     BACKUP_FOLDER_SMART_HOME_SYSTEM = "/opt/fhem/backup/"
 elif SMART_HOME_SYSTEM == 'iobroker':
-    BACKUP_FOLDER_SMART_HOME_SYSTEM = "/opt/iobroker/backup/"
+    BACKUP_FOLDER_SMART_HOME_SYSTEM = "/opt/iobroker/backups/"
 else:
     logging.warning('>>> system entry not valid (use "fhem" or "iobroker")')
     logging.warning('>>> stopping execution of backup system')
@@ -128,7 +128,7 @@ def iobroker_backup():
     # do iobroker backup in /opt/iobroker
     directory_path = os.getcwd()
     os.chdir('/opt/iobroker/')
-    cmd = 'iobroker backup'
+    cmd = 'sudo iobroker backup'
     os.system(cmd)
     os.chdir(directory_path)
 
