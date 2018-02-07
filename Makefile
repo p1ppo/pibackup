@@ -1,5 +1,9 @@
 .PHONY: git
 
+init:
+
+
+
 git:
 	git add . 
 	git commit -am "Update"
