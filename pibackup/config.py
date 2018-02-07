@@ -67,7 +67,7 @@ def config_pibackup():
 def add_cron_job():
     from crontab import CronTab
     cron = CronTab(user=True)
-    job = cron.new(command='pibackup &')
+    job = cron.new(command='/usr/local/bin/pibackup &')
     job.every_reboot()
     cron.write()
     user_output(['>>> Added new cron job to user cron table'])
