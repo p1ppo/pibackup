@@ -1,17 +1,14 @@
 {
-    "folders": {
-        "home": "/home/pi/"
-    },
-    "schedules": {
-        "backup_local": 3,
-        "clean_local": 4,
-        "cloud_sync": "Welt"
+    "system": {
+    	"type": "fhem"
     },
     "rclone": {
     	"drive_name": "drive:",
 	"cloud_path": "/backups/fhem/"
     },
-    "system": {
-    	"type": "fhem"
+    "schedules": {
+        "backup_local": "Wednesday",
+        "clean_local": "Thursday",
+        "cloud_sync": "Sunday"
     }
 }

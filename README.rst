@@ -40,12 +40,23 @@ Run config
 .. code-block:: bash
 
     $ pibackup-config
+    
+    ibackup - smart home backup system
+    >>> main
+    
+    s) Setup config file for pibackup
+    c) Configure rclone cloud drive
+    a) Add cron job at reboot to start backup
+    q) Quit config
+    s/c/q>
 
-...and go through steps within config dialogue:
+...and go through the simple three steps within the dialogue:
 
-1. generate config file
-2. setup rclone
-3. generate crontab entry to run at boot
+1. generate config file (enter s)
+2. setup rclone (enter c)
+3. generate crontab entry to run at boot (enter a)
+
+Just follow the instructions on screen.
 
 .. code-block:: bash
 
@@ -56,7 +67,22 @@ Finally edit ~/.conf/pibackup/config.json to your liking, especially adapt
 1. system type (fhem or iobroker)
 2. backup folder name for cloud drive
 
-.. code-block:: bash
+.. code-block:: json
+
+    {
+        "system": {
+            "type": "fhem"
+        },
+        "rclone": {
+            "drive_name": "drive:",
+            "cloud_path": "/backups/fhem/"
+        },
+        "schedules": {
+            "backup_local": "Wednesday",
+            "clean_local": "Thursday",
+            "cloud_sync": "Sunday"
+        }
+    }
 
     more to follow...
 
