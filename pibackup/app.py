@@ -58,11 +58,14 @@ else:
     logging.warning('>>> stopping execution of backup system')
     sys.exit()
 
-DAY_FOR_BACKUP = "Wednesday"
+# DAY_FOR_BACKUP = "Wednesday"
+DAY_FOR_BACKUP = config_data['schedules']['backup_local']
 FILES_TO_KEEP_IN_BACKUP = 5
-DAY_FOR_CLEANUP_BACKUP_FOLDER = "Thursday"
+# DAY_FOR_CLEANUP_BACKUP_FOLDER = "Thursday"
+DAY_FOR_CLEANUP_BACKUP_FOLDER = config_data['schedules']['clean_local']
 # DAY_FOR_LOCAL_MIRRORING = "Friday"
-DAY_FOR_CLOUD_MIRRORING = "Sunday"
+# DAY_FOR_CLOUD_MIRRORING = "Sunday"
+DAY_FOR_CLOUD_MIRRORING = config_data['schedules']['cloud_sync']
 EXECUTION_TIME = "03:00"
 DATE_FOR_REBOOT = 15
 
