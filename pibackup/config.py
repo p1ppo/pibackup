@@ -56,10 +56,13 @@ def config_pibackup():
             if not os.path.exists(config_file_path):
                 cmd = 'cp ' + config_file_template + ' ' + config_file_path
                 os.system(cmd)
-                user_output(['>>> created config file at' + config_file_path])
+                user_output(['>>> created config file at ' + config_file_path,
+                             'Please edit in text editor of your choice',
+                             'Make sure to enter right system (fhem or iobroker)',
+                             'Please specify also backup directory on cloud drive'])
                 break
             else:
-                user_output(['>>> config file already exists at' + config_file_path])
+                user_output(['>>> config file already exists at ' + config_file_path])
                 break
     return
 
