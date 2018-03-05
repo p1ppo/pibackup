@@ -165,7 +165,13 @@ def clean_backup_folder():
 
     # delete oldest until 5 left
     for tp in file_list_change_time[:-5]:
-        os.remove(tp[0])
+        try:
+            # os.remove(tp[0])
+            os.system('sudo rm ' + tp[0])
+            logging.debug('Deleted excess old file: ' + tp[0])
+        except:
+            logging.info('Could not delete old file ' + tp[0])
+            logging.info('Please add user to sudoers group')
 
     # change back to old directory
     os.chdir(directory_path)
