@@ -8,3 +8,4 @@ lib/*mac
 pibackup.egg-info/
 .DS-Store
 .cache/
+.venv/
