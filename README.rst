@@ -52,6 +52,9 @@ It is encouraged, though not necessary, to install and execute within a virtual 
 For further information on this, read about `virtualenv <https://virtualenv.pypa.io/en/latest/>`_ or `venv <https://docs.python.org/3/library/venv.html>`_.
 
 
+In case you install into a virtual environment, please adapt the crontab entry later, as mentioned in section "On adding the cron job". 
+
+
 2. Run config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Simply invoke from the command line:
@@ -135,6 +138,18 @@ If you want to double check, do this with:
 .. code-block:: bash
 
     $ crontab -l
+
+
+In case you installed in a virtual environment, please adapt the cron table entry to resemble a format like:
+
+
+.. code-block:: bash
+
+    @reboot /home/pi/.pibackup-venv/bin/python /home/pi/.pibackup-venv/bin/pibackup &
+
+
+This calls the virtualenv python interpreter and sets the python path accordingly.
+
 
 
 
