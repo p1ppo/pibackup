@@ -7,6 +7,7 @@ if not present standard parameters shall be used
 
 from pkg_resources import resource_filename
 import os
+import subprocess
 import pathlib
 
 
@@ -17,7 +18,7 @@ def config_rclone():
     # for mac system
     # rclone_path = resource_filename('pibackup', '../lib/rclone_mac')
     # for raspberry
-    print('\n\n\npibackup - smart home backup system')
+    print_header()
     print('>>> main >>> rclone config\n')
     rclone_path = resource_filename('pibackup', '../lib/rclone')
     rclone_abspath = '"' + os.path.abspath(rclone_path) + '"'
@@ -27,22 +28,23 @@ def config_rclone():
 
 def user_output(lines):
     line_length = max(map(lambda item: len(item), lines))
-    print('\n' * 3)
+    print('\n' * 2)
     print('-' * line_length)
     for line in lines:
         print(line)
     print('-' * line_length)
+    print('\n' * 2)
     return
 
 
 def config_pibackup():
     answer = ''
     while answer != 'q':
-        print('\n\n\npibackup - smart home backup system')
+        print_header()
         print('>>> main >>> pibackup config file\n')
         print('c) Copy config template to ~/.config/pibackup')
-        print('q) Quit config')
-        answer = input('c/q> ').lower()
+        print('q) Quit this page (go back)')
+        answer = input('\nc/q> ').lower()
         # if answer not in ['c', 'q']:
             # config_pibackup()
         if answer == 'c':
@@ -77,16 +79,25 @@ def add_cron_job():
     return
 
 
+def print_header():
+    subprocess.call(['clear'])
+    print('***********************************************')
+    print('***   pibackup - smart home backup system   ***')
+    print('***********************************************')
+
+
+
+
 def main():
     answer = ''
     while answer != 'q':
-        print('\n\n\npibackup - smart home backup system')
+        print_header()
         print('>>> main\n')
         print('s) Setup config file for pibackup')
         print('c) Configure rclone cloud drive')
         print('a) Add cron job at reboot to start backup')
         print('q) Quit config')
-        answer = input('s/c/q> ').lower()
+        answer = input('\ns/c/a/q> ').lower()
         # if answer not in ['s', 'c', 'q']:
             # main()
         if answer == 'c':
@@ -97,7 +108,7 @@ def main():
             add_cron_job()
     user_output(['After configuration you can run pibackup through reboot or',
                  '> pibackup &',
-                 '> disown'
+                 '> disown',
                  ])
 
 
