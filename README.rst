@@ -11,7 +11,7 @@ A scheduled *configure-once-and-forget-it* backup solution
 for smart home systems running on linux base, e.g. Raspberry Pi.
 Covered at date are fhem and iobroker. Feel free to request or contribute extensions.
 
-Building on the well made piece of software `rclone <https://rclone.org/>`_ and `schedule <https://github.com/dbader/schedule>`_.
+Building on the well made pieces of software `rclone <https://rclone.org/>`_ and `schedule <https://github.com/dbader/schedule>`_.
 
 
 Core functions and Features
@@ -42,76 +42,105 @@ Follow four easy steps:
 The steps are described below in more detail.
 
 
-Install from PyPi
-^^^^^^^^^^^^^^^^^
+1. Install from PyPi
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
     $ sudo pip3 install pibackup
 
 It is encouraged, though not necessary, to install and execute within a virtual environment.
-For further information on this, read about `virtualenv <https://virtualenv.pypa.io/en/latest/>`_.
+For further information on this, read about `virtualenv <https://virtualenv.pypa.io/en/latest/>`_ or `venv <https://docs.python.org/3/library/venv.html>`_.
 
 
-Run config
-^^^^^^^^^^
+2. Run config
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Simply invoke from the command line:
 
 .. code-block:: bash
 
     $ pibackup-config
 
-This invokes a simple dialogue to set up the system. Essentially, you execute three steps, which are:
-    a. generate a config file (enter s)
-    b. setup rclone (enter c)
-    c. generate crontab entry to run at boot (enter a)
 
-    
+
+This calls a dialogue to set up the system. Essentially, you follow three steps, which are:
+- generate a config file (enter s)
+- setup rclone (enter c)
+- generate a crontab entry to start the process at boot (enter a)
+
+
+The dialogue looks like this.
+
 .. code-block:: bash
 
-    pibackup - smart home backup system
+    ***********************************************
+    ***   pibackup - smart home backup system   ***
+    ***********************************************
     >>> main
     
     s) Setup config file for pibackup
     c) Configure rclone cloud drive
     a) Add cron job at reboot to start backup
     q) Quit config
+    
+    s/c/a/q> 
 
-    s/c/a/q>
-
+Navigate by entering the respective letter. Start with creating the config file:
 
 On setting up the config file
 """""""""""""""""""""""""""""
-.. code-block:: bash
 
-    more to follow...
+.. code-block:: bash
+    
+    ***********************************************
+    ***   pibackup - smart home backup system   ***
+    ***********************************************
+    >>> main >>> pibackup config file
+    
+    c) Copy config template to ~/.config/pibackup
+    q) Quit this page (go back)
+    
+    c/q>
+
+Entering "c" creates a copy of the config file in the home directory.
+
+Do this and return to the main screen with "q".
+
+After this, in the main screen, enter "c" to navigate to the rclone setup.
 
 
 On configuring rclone
 """""""""""""""""""""
 
-This leads straight into the configuration dialogue of rclone itself. The tool is very well documented `here <https://rclone.org>`_.
+This leads straight into the configuration dialogue of rclone itself. As pibackup is a wrapper using rclone, you are now interacting with rclone directly.
 
-Typically remote drives such as Google Drive, Dropbox, Box or OneDrive might be in use at your end and considered for this purpose. You can use pretty much *everything*. There are respective instructions available (as few examples, explore to your liking further options including ftp, local storage, http and what not):
+The tool is very well documented `here <https://rclone.org>`_. Please have a peek and check the section related to the backup storage you want to use. Typically remote drives such as Google Drive, Dropbox, Box or OneDrive might be in use at your end and considered for storing the backup. While you can use pretty much *everything*, please find links to popular choices:
 
-* `Google Drive <https://rclone.org/drive/>`_
-* `Dropbox <https://rclone.org/dropbox/>`_
-* `Box <https://rclone.org/box/>`_
-* `OneDrive <https://rclone.org/onedrive/>`_
+- `Google Drive <https://rclone.org/drive/>`_
+- `Dropbox <https://rclone.org/dropbox/>`_
+- `Box <https://rclone.org/box/>`_
+- `OneDrive <https://rclone.org/onedrive/>`_
 
 
-Wherever the documentation says run "rclone config", this is what you are actually doing in the pibackup dialogue already.
+As mentioned above: Wherever the documentation asks you to run "rclone config", this is what you are actually doing in the pibackup dialogue already.
 
 
 
 On adding the cron job
 """"""""""""""""""""""
 
+Back in the main dialogue, select "a" to amend the crontab, which adds an entry to start the backup process at every reboot.
+
+If you want to double check, do this with:
+
 .. code-block:: bash
 
-    more to follow...
+    $ crontab -l
 
 
-Edit config file for customization
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+3. Edit config file for customization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The config file is located at ~/.conf/pibackup/config.json.
 
@@ -138,21 +167,23 @@ It looks like this:
 
 The three sections describe
 
-1. which *system* type is in use (currently "fhem" or "iobroker" are supported and can be used as values)
-2. which parameters to use for *rclone*
-
-    a. The drive name identifies the remote storage location
-    b. The cloud path defines which specific storage place to use on the remote storage location
-
-3. Which *schedules* to follow for the main tool actions
+- which *system* type is in use
+- which parameters to use for *rclone*
+- Which *schedule* to follow for the main tool actions
 
 
 On system type
 """""""""""""""""""""""""""""
+Currently the system *types* "fhem" or "iobroker" are supported and can be used as values.
 
 
 On rclone parameters 
 """""""""""""""""""""""""""""
+The *drive name* identifies the remote storage location you created in the rclone setup. Please enter the name you used there. Please include the colon at the end, like "drive:" (in the documentation examples it is often "remote:")
+
+
+The *cloud path* specifies the folder on the remote drive. Choose to your liking.
+
 
 
 On schedules
@@ -160,17 +191,15 @@ On schedules
 
 Typically you can leave this as is. The parameters are pretty verbose:
 
-*backup_local* schedules the weekday on which the smart phone system backups are run.
-
-*clean_local* schedules the weekday on which the local maintenance on the backup folder is being done.
-
-*cloud_sync* schedules the weekday on which the sync to the cloud drive is performed.
+- *backup_local* schedules the weekday on which the smart phone system backups are run.
+- *clean_local* schedules the weekday on which the local maintenance on the backup folder is being done.
+- *cloud_sync* schedules the weekday on which the sync to the cloud drive is performed.
 
 
 
-Reboot and feel comfortable...
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+4. Reboot and feel comfortable...
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Nice, you did something good for yourself. Congrats and enjoy.
 
 .. Technical info
 .. --------------
