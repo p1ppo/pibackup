@@ -157,7 +157,7 @@ This calls the virtualenv python interpreter and sets the python path accordingl
 3. Edit config file for customization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The config file is located at ~/.conf/pibackup/config.json.
+The config file is located at ~/.config/pibackup/config.json.
 
 It looks like this:
 
